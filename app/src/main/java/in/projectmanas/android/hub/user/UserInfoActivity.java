@@ -1,4 +1,4 @@
-package in.projectmanas.android.hub;
+package in.projectmanas.android.hub.user;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import in.projectmanas.android.hub.Constants;
+import in.projectmanas.android.hub.R;
 import in.projectmanas.android.hub.backend.PMUserWrapper;
 
 public class UserInfoActivity extends AppCompatActivity {

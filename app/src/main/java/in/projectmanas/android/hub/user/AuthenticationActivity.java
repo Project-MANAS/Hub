@@ -1,4 +1,4 @@
-package in.projectmanas.android.hub;
+package in.projectmanas.android.hub.user;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -34,6 +34,9 @@ import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import in.projectmanas.android.hub.HomeActivity;
+import in.projectmanas.android.hub.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

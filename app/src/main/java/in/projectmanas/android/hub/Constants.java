@@ -67,7 +67,7 @@ public class Constants {
 
     public static class tags {
 
-        public static final String pointListFragment = "pointListFragment";
+        public static final String userListFragment = "userListFragment";
         public static final String pointViewerFragment = "pointViewerFragment";
         public static final String splashFragment = "splashFragment";
         public static final String commentListFragment = "commentListFragment";

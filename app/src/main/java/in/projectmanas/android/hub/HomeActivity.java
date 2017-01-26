@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,123 +15,162 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import in.projectmanas.android.hub.backend.PMUserWrapper;
+import in.projectmanas.android.hub.user.AuthenticationActivity;
+import in.projectmanas.android.hub.user.UserInfoActivity;
+import in.projectmanas.android.hub.user.UserListFragment;
+
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+		implements NavigationView.OnNavigationItemSelectedListener, UserListFragment.OnListFragmentInteractionListener {
 
-    private static final int REQUEST_USER_INFO = 1234;
+	private static final int REQUEST_USER_INFO = 1234;
+	private UserListFragment listF;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_USER_INFO) {
-            if (resultCode != RESULT_OK) {
-                if (ParseUser.getCurrentUser() == null || !ParseUser.getCurrentUser().isAuthenticated()) {
-                    Intent intent = new Intent(HomeActivity.this, AuthenticationActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        }
-    }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_USER_INFO) {
+			if (resultCode != RESULT_OK) {
+				if (ParseUser.getCurrentUser() == null || !ParseUser.getCurrentUser().isAuthenticated()) {
+					Intent intent = new Intent(HomeActivity.this, AuthenticationActivity.class);
+					startActivity(intent);
+					finish();
+				}
+			}
+		}
+	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_home);
 
-        if (ParseUser.getCurrentUser() == null || !ParseUser.getCurrentUser().isAuthenticated()) {
-            Intent intent = new Intent(HomeActivity.this, AuthenticationActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
+		if (ParseUser.getCurrentUser() == null || !ParseUser.getCurrentUser().isAuthenticated()) {
+			Intent intent = new Intent(HomeActivity.this, AuthenticationActivity.class);
+			startActivity(intent);
+			finish();
+			return;
+		}
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+						.setAction("Action", null).show();
+			}
+		});
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+		drawer.setDrawerListener(toggle);
+		toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(HomeActivity.this, UserInfoActivity.class);
-                startActivityForResult(i, REQUEST_USER_INFO);
-            }
-        });
-    }
+		navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent i = new Intent(HomeActivity.this, UserInfoActivity.class);
+				startActivityForResult(i, REQUEST_USER_INFO);
+			}
+		});
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+		openUserListFragment();
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
+	private void openUserListFragment() {
+		// find the retained fragment on activity restarts
+		FragmentManager fm = getSupportFragmentManager();
+		listF = (UserListFragment) fm.findFragmentByTag(Constants.tags.userListFragment);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+		if (listF == null) {
+			listF = UserListFragment.newInstance(1);
+			fm.beginTransaction()
+					.replace(R.id.container_home, listF, Constants.tags.userListFragment)
+					.commit();
+		}
+	}
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+	@Override
+	public void onBackPressed() {
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		if (drawer.isDrawerOpen(GravityCompat.START)) {
+			drawer.closeDrawer(GravityCompat.START);
+		} else {
+			super.onBackPressed();
+		}
+	}
 
-        return super.onOptionsItemSelected(item);
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.home, menu);
+		return true;
+	}
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+		//noinspection SimplifiableIfStatement
+		if (id == R.id.action_settings) {
+			return true;
+		}
 
-        } else if (id == R.id.nav_slideshow) {
+		return super.onOptionsItemSelected(item);
+	}
 
-        } else if (id == R.id.nav_manage) {
+	@SuppressWarnings("StatementWithEmptyBody")
+	@Override
+	public boolean onNavigationItemSelected(MenuItem item) {
+		// Handle navigation view item clicks here.
+		int id = item.getItemId();
 
-        } else if (id == R.id.nav_share) {
+		if (id == R.id.nav_camera) {
+			// Handle the camera action
+		} else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_send) {
+		} else if (id == R.id.nav_slideshow) {
 
-        }
+		} else if (id == R.id.nav_manage) {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+		} else if (id == R.id.nav_share) {
+
+		} else if (id == R.id.nav_send) {
+
+		}
+
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawer.closeDrawer(GravityCompat.START);
+		return true;
+	}
+
+	@Override
+	public void onListItemSelected(PMUserWrapper item) {
+		//
+	}
+
+	@Override
+	public void onListLoadFailed(ParseException e) {
+		Snackbar.make(findViewById(R.id.cl_home), e.getLocalizedMessage(), Snackbar.LENGTH_INDEFINITE)
+				.setAction(R.string.retry, new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						listF.onRefresh();
+					}
+				})
+				.show();
+	}
 }
