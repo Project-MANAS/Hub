@@ -127,7 +127,7 @@ public class TestActivity extends AppCompatActivity
         } else if (!isDeviceOnline()) {
             mOutputText.setText("No network connection available.");
         } else {
-            new MakeRequestTask(mCredential).execute();
+            new ReadSpreadSheet(mCredential).execute();
         }
     }
 
@@ -321,7 +321,7 @@ public class TestActivity extends AppCompatActivity
      * An asynchronous task that handles the Google Sheets API call.
      * Placing the API calls in their own task ensures the UI stays responsive.
      */
-    private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
+    /*private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.sheets.v4.Sheets mService = null;
         private Exception mLastError = null;
 
@@ -334,11 +334,11 @@ public class TestActivity extends AppCompatActivity
                     .build();
         }
 
-        /**
+        *//**
          * Background task to call Google Sheets API.
          *
          * @param params no parameters needed for this task.
-         */
+         *//*
         @Override
         protected List<String> doInBackground(Void... params) {
             try {
@@ -350,13 +350,13 @@ public class TestActivity extends AppCompatActivity
             }
         }
 
-        /**
+        *//**
          * Fetch a list of names and majors of students in a sample spreadsheet:
          * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
          *
          * @return List of names and majors
          * @throws IOException
-         */
+         *//*
         private List<String> getDataFromApi() throws IOException {
             String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
             String range = "Class Data!A2:E";
@@ -411,5 +411,5 @@ public class TestActivity extends AppCompatActivity
                 mOutputText.setText("Request cancelled.");
             }
         }
-    }
+    }*/
 }
