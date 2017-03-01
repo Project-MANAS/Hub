@@ -17,9 +17,10 @@ import java.util.List;
  * Created by Kaushik on 2/25/2017.
  */
 
-public class ReadSpreadSheet extends AsyncTask<Void, Void, List<List<String>>> {
+public class ReadSpreadSheet extends AsyncTask<String, Void, List<List<String>>> {
     private com.google.api.services.sheets.v4.Sheets mService = null;
     private Exception mLastError = null;
+    private String range;
 
     ReadSpreadSheet(GoogleAccountCredential credential) {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
@@ -36,8 +37,9 @@ public class ReadSpreadSheet extends AsyncTask<Void, Void, List<List<String>>> {
      * @param params no parameters needed for this task.
      */
     @Override
-    protected List<List<String>> doInBackground(Void... params) {
+    protected List<List<String>> doInBackground(String[] params) {
         try {
+            range = params[0];
             return getDataFromApi();
         } catch (Exception e) {
             mLastError = e;
@@ -49,14 +51,14 @@ public class ReadSpreadSheet extends AsyncTask<Void, Void, List<List<String>>> {
 
     private List<List<String>> getDataFromApi() throws IOException {
         String spreadsheetId = "1FGI6TBtBW86w6xoZPQYzBIAEQ7coItk5QmX0hrzH-zw";
-        String range = "DashBoard!I3:K";
+
         ValueRange response = this.mService.spreadsheets().values()
                 .get(spreadsheetId, range)
                 .execute();
         List<List<Object>> values = response.getValues();
         List<List<String>> valueStrings = null;
         if (values != null) {
-            Log.d("size", values.size()+" ");
+            Log.d("size", values.size() + " ");
             for (List row : values) {
                 Log.d("adasd", row.get(0) + " " + row.get(1) + " " + row.get(2));
                 List<String> currentRow = null;
