@@ -61,8 +61,8 @@ public class FirstRunActivity extends AppCompatActivity
             //mOutputText.setText("No network connection available.");
         } else {
             //new ReadSpreadSheet(mCredential).execute();
-            Intent intent  = new Intent(FirstRunActivity.this, HomeActivity.class);
-            intent.putExtra(ConstantsManas.ACCNAME,mCredential.getSelectedAccountName());
+            Intent intent = new Intent(FirstRunActivity.this, HomeActivity.class);
+            intent.putExtra(ConstantsManas.ACCNAME, mCredential.getSelectedAccountName());
             startActivity(intent);
         }
     }
