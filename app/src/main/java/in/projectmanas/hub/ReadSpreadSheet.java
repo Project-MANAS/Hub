@@ -1,10 +1,16 @@
 package in.projectmanas.hub;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -13,6 +19,8 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static in.projectmanas.hub.FirstRunActivity.REQUEST_GOOGLE_PLAY_SERVICES;
 
 /**
  * Created by Kaushik on 2/25/2017.
@@ -23,8 +31,10 @@ public class ReadSpreadSheet extends AsyncTask<String, Void, ArrayList<ArrayList
     private Exception mLastError = null;
     private String range;
     public AsyncResponse delegate = null;
+    private Activity context;
 
-    ReadSpreadSheet(GoogleAccountCredential credential) {
+    ReadSpreadSheet(GoogleAccountCredential credential, Activity context) {
+        this.context = context;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         mService = new com.google.api.services.sheets.v4.Sheets.Builder(
@@ -44,6 +54,7 @@ public class ReadSpreadSheet extends AsyncTask<String, Void, ArrayList<ArrayList
             range = params[0];
             return getDataFromApi();
         } catch (Exception e) {
+            Log.e("Error", e.toString());
             mLastError = e;
             cancel(true);
             return null;
@@ -57,6 +68,7 @@ public class ReadSpreadSheet extends AsyncTask<String, Void, ArrayList<ArrayList
         ValueRange response = this.mService.spreadsheets().values()
                 .get(spreadsheetId, range)
                 .execute();
+
         List<List<Object>> values = response.getValues();
         ArrayList<ArrayList<String>> valueStrings = new ArrayList<>();
         if (values != null) {
@@ -80,6 +92,37 @@ public class ReadSpreadSheet extends AsyncTask<String, Void, ArrayList<ArrayList
     protected void onPostExecute(ArrayList<ArrayList<String>> output) {
         //Log.d("Output recieved of size", output.size() + "");
         delegate.processFinish(output);
+    }
+
+    void showGooglePlayServicesAvailabilityErrorDialog(
+            final int connectionStatusCode) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        Dialog dialog = apiAvailability.getErrorDialog(
+                context,
+                connectionStatusCode,
+                REQUEST_GOOGLE_PLAY_SERVICES);
+        dialog.show();
+    }
+
+    @Override
+    protected void onCancelled() {
+
+        if (mLastError != null) {
+            if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
+                showGooglePlayServicesAvailabilityErrorDialog(
+                        ((GooglePlayServicesAvailabilityIOException) mLastError)
+                                .getConnectionStatusCode());
+            } else if (mLastError instanceof UserRecoverableAuthIOException) {
+                context.startActivityForResult(
+                        ((UserRecoverableAuthIOException) mLastError).getIntent(),
+                        TestActivity.REQUEST_AUTHORIZATION);
+            } else {
+                Log.e("Error", "The following error occurred:\n"
+                        + mLastError.getMessage());
+            }
+        } else {
+            Log.e("Error", "Request cancelled.");
+        }
     }
 
 }

@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         mCredential.setSelectedAccountName(getIntent().getStringExtra(ConstantsManas.ACCNAME));
         Log.d("crdential here ", getIntent().getStringExtra(ConstantsManas.ACCNAME));
         String[] params = new String[]{"DashBoard!I3:K"};
-        ReadSpreadSheet readSpreadSheet = new ReadSpreadSheet(mCredential);
+        ReadSpreadSheet readSpreadSheet = new ReadSpreadSheet(mCredential, this);
         readSpreadSheet.delegate = this;
         readSpreadSheet.execute(params);
 
@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void processFinish(ArrayList<ArrayList<String>> output) {
         //Just logging here for checking the fetched data
+        Log.d("check", output.size()+" ");
         for (List<String> row : output) {
             for (String cell : row) {
                 Log.d("check", cell);
