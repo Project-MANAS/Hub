@@ -29,7 +29,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class FirstRunActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
-    GoogleAccountCredential mCredential;
+    public static GoogleAccountCredential mCredential;
     ProgressDialog mProgress;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -50,6 +50,7 @@ public class FirstRunActivity extends AppCompatActivity
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+
         getResultsFromApi();
     }
 
@@ -63,7 +64,6 @@ public class FirstRunActivity extends AppCompatActivity
         } else {
             //new ReadSpreadSheet(mCredential).execute();
             Intent intent = new Intent(FirstRunActivity.this, HomeActivity.class);
-            intent.putExtra(ConstantsManas.ACCNAME, mCredential.getSelectedAccountName());
             startActivity(intent);
         }
     }
