@@ -102,15 +102,6 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         yearlyFragment.setStringList(yearList);
         fragments.add(yearlyFragment);
 
-
-        /*
-        MonthlyFragment monthlyFragment = MonthlyFragment.getInstance();
-        monthlyFragment.setStringList(output);
-        fragments.add(monthlyFragment);
-        YearlyFragment yearlyFragment = YearlyFragment.getInstance();
-        fragments.add(yearlyFragment);
-        yearlyFragment.setStringList(output);
-        */
         final String[] titles = {"Weekly", "Monthly", "Yearly"};
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
