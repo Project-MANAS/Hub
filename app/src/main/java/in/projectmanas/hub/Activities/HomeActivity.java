@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    startActivity(new Intent(HomeActivity.this, LeaderBoardActivity.class).putExtra("params", new String[]{"Leaderboard!A4:F"}).putExtra("toolbarName","Attendance"));
+                    startActivity(new Intent(HomeActivity.this, LeaderBoardActivity.class).putExtra("params", new String[]{"Leaderboard!A4:F"}).putExtra("toolbarName", "Attendance"));
                 } else if (i == 1) startActivity(new Intent(HomeActivity.this, Users.class));
             }
         });
@@ -86,7 +86,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         PartFragment weeklyFragment = PartFragment.getInstance();
         ArrayList<String> weekList = new ArrayList<>();
         for (ArrayList<String> row : output) {
-            weekList.add(row.get(0) + " : " + row.get(1));
+            if (!row.get(0).equals("") && !row.get(1).equals(""))
+                weekList.add(row.get(0) + " : " + row.get(1));
         }
         weeklyFragment.setStringList(weekList);
         fragments.add(weeklyFragment);
@@ -94,7 +95,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         PartFragment monthlyFragment = PartFragment.getInstance();
         ArrayList<String> monthList = new ArrayList<>();
         for (ArrayList<String> row : output) {
-            monthList.add(row.get(0) + " : " + row.get(2));
+            if (!row.get(0).equals("") && !row.get(2).equals(""))
+                monthList.add(row.get(0) + " : " + row.get(2));
         }
         monthlyFragment.setStringList(monthList);
         fragments.add(monthlyFragment);
@@ -102,7 +104,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         PartFragment yearlyFragment = PartFragment.getInstance();
         ArrayList<String> yearList = new ArrayList<>();
         for (ArrayList<String> row : output) {
-            yearList.add(row.get(0) + " : " + row.get(3));
+            if (!row.get(0).equals("") && !row.get(3).equals(""))
+                yearList.add(row.get(0) + " : " + row.get(3));
         }
         yearlyFragment.setStringList(yearList);
         fragments.add(yearlyFragment);

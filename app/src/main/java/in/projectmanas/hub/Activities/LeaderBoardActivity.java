@@ -115,6 +115,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
         PartFragment weeklyFragment = PartFragment.getInstance();
         ArrayList<String> weekList = new ArrayList<>();
         for (ArrayList<String> row : output) {
+            if (!row.get(0).equals("") && !row.get(1).equals(""))
             weekList.add(row.get(0) + " : " + row.get(1));
         }
         weeklyFragment.setStringList(weekList);
@@ -123,6 +124,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
         PartFragment monthlyFragment = PartFragment.getInstance();
         ArrayList<String> monthList = new ArrayList<>();
         for (ArrayList<String> row : output) {
+            if (!row.get(2).equals("") && !row.get(3).equals(""))
             monthList.add(row.get(2) + " : " + row.get(3));
         }
         monthlyFragment.setStringList(monthList);
@@ -131,6 +133,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
         PartFragment yearlyFragment = PartFragment.getInstance();
         ArrayList<String> yearList = new ArrayList<>();
         for (ArrayList<String> row : output) {
+            if (!row.get(4).equals("") && !row.get(5).equals(""))
             yearList.add(row.get(4) + " : " + row.get(5));
         }
         yearlyFragment.setStringList(yearList);
