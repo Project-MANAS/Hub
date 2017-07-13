@@ -16,14 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import in.projectmanas.hub.AsyncResponse;
-import in.projectmanas.hub.ConstantsManas;
 import in.projectmanas.hub.Fragments.PartFragment;
 import in.projectmanas.hub.R;
 
@@ -53,9 +50,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    startActivity(new Intent(HomeActivity.this, LeaderBoardActivity.class));
-                }
-                else if(i==1) startActivity(new Intent(HomeActivity.this, Users.class));
+                    startActivity(new Intent(HomeActivity.this, LeaderBoardActivity.class).putExtra("params", new String[]{"Leaderboard!A4:F"}).putExtra("toolbarName","Attendance"));
+                } else if (i == 1) startActivity(new Intent(HomeActivity.this, Users.class));
             }
         });
         //toolbar.setTitleTextColor(Color.WHITE);

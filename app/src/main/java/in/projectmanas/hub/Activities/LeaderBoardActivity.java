@@ -44,7 +44,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_home);
         linkViews();
-        toolbar.setTitle("Leaderboard");
+        toolbar.setTitle("Leaderboard : " + getIntent().getStringExtra("toolbarName"));
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -57,19 +57,19 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
                         break;
                     case 2:
                         String[] params1 = new String[]{"Leaderboard!A4:F"};
-                        updateDetails(params1);
+                        refreshActivity(params1, "Attendance");
                         break;
                     case 3:
                         String[] params2 = new String[]{"Leaderboard!G4:L"};
-                        updateDetails(params2);
+                        refreshActivity(params2, "In Time");
                         break;
                     case 4:
                         String[] params3 = new String[]{"Leaderboard!M4:R"};
-                        updateDetails(params3);
+                        refreshActivity(params3, "Out Time");
                         break;
                     case 5:
                         String[] params4 = new String[]{"Leaderboard!S4:X"};
-                        updateDetails(params4);
+                        refreshActivity(params4, "Punch Duration");
                         break;
                 }
             }
@@ -79,10 +79,16 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
 
         //tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
         mCredential = FirstRunActivity.mCredential;
-
-        //Log.d("crdential here ", getIntent().getStringExtra(ConstantsManas.ACCNAME));
-        String[] params = new String[]{"Leaderboard!A4:F"};
+        String[] params = getIntent().getStringArrayExtra("params");
         updateDetails(params);
+    }
+
+    private void refreshActivity(String[] params, String toolbarName) {
+        Intent intent = getIntent();
+        intent.putExtra("params", params);
+        intent.putExtra("toolbarName", toolbarName);
+        finish();
+        startActivity(intent);
     }
 
     private void updateDetails(String[] params) {
