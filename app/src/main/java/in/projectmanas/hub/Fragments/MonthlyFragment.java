@@ -21,7 +21,7 @@ import in.projectmanas.hub.R;
 
 public class MonthlyFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
-    ArrayList<String> s = new ArrayList<>();
+    ArrayList<String> arrayList = new ArrayList<>();
     HomeRecyclerAdapter homeRecyclerAdapter;
     RecyclerView recyclerView;
 
@@ -38,14 +38,12 @@ public class MonthlyFragment extends Fragment {
         linearLayoutManager.setReverseLayout(false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
-        homeRecyclerAdapter = new HomeRecyclerAdapter(getActivity(), s);
+        homeRecyclerAdapter = new HomeRecyclerAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(homeRecyclerAdapter);
         return view;
     }
 
-    public void setStringList(ArrayList<ArrayList<String>> output) {
-        for (ArrayList<String> row : output) {
-            s.add(row.get(0) + " : " + row.get(2));
-        }
+    public void setStringList(ArrayList<String> output) {
+        arrayList = output;
     }
 }
