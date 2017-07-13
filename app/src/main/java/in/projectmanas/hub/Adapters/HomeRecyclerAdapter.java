@@ -22,9 +22,9 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     Context context;
     private ArrayList<String> s = new ArrayList<>();
 
-    public HomeRecyclerAdapter(Context context) {
+    public HomeRecyclerAdapter(Context context, ArrayList<String> s) {
         this.context = context;
-
+        this.s = s;
     }
 
 

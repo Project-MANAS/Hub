@@ -22,10 +22,10 @@ import in.projectmanas.hub.R;
  * Created by knnat on 13-07-2017.
  */
 
-public class YearlyFragment extends Fragment implements AsyncResponse {
+public class YearlyFragment extends Fragment {
 
     SwipeRefreshLayout swipeRefreshLayout;
-    List<String> s = new ArrayList<>();
+    ArrayList<String> s = new ArrayList<>();
     HomeRecyclerAdapter homeRecyclerAdapter;
     RecyclerView recyclerView;
 
@@ -42,19 +42,14 @@ public class YearlyFragment extends Fragment implements AsyncResponse {
         linearLayoutManager.setReverseLayout(false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
-        homeRecyclerAdapter = new HomeRecyclerAdapter(getActivity());
+        homeRecyclerAdapter = new HomeRecyclerAdapter(getActivity(),s);
         recyclerView.setAdapter(homeRecyclerAdapter);
         return view;
     }
 
-    @Override
-    public void processFinish(ArrayList<ArrayList<String>> output) {
-        //Just logging here for checking the fetched data
-        Log.d("check", output.size() + " ");
-        for (List<String> row : output) {
-            homeRecyclerAdapter.addTolist(row.get(0)+row.get(3));
-            homeRecyclerAdapter.notifyDataSetChanged();
+    public void setStringList(ArrayList<ArrayList<String>> output) {
+        for (ArrayList<String> row : output) {
+            s.add(row.get(0) + " : " + row.get(3));
         }
-
     }
 }

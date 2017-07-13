@@ -47,28 +47,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
         toolbar.setTitle("Home");
         //toolbar.setTitleTextColor(Color.WHITE);
         //setSupportActionBar(toolbar);
-        final ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(WeeklyFragment.getInstance());
-        fragments.add(MonthlyFragment.getInstance());
-        fragments.add(YearlyFragment.getInstance());
-        final String[] titles = {"Weekly", "Monthly", "Yearly"};
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return fragments.get(position);
-            }
 
-            @Override
-            public int getCount() {
-                return fragments.size();
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return titles[position];
-            }
-        });
-        tabLayout.setupWithViewPager(viewPager);
         //tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
 
         mCredential = GoogleAccountCredential.usingOAuth2(
@@ -102,5 +81,33 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
             }
         }
         //TODO: Do something of this table;
+        final ArrayList<Fragment> fragments = new ArrayList<>();
+        WeeklyFragment weeklyFragment = WeeklyFragment.getInstance();
+        weeklyFragment.setStringList(output);
+        fragments.add(weeklyFragment);
+        MonthlyFragment monthlyFragment = MonthlyFragment.getInstance();
+        monthlyFragment.setStringList(output);
+        fragments.add(monthlyFragment);
+        YearlyFragment yearlyFragment = YearlyFragment.getInstance();
+        fragments.add(yearlyFragment);
+        yearlyFragment.setStringList(output);
+        final String[] titles = {"Weekly", "Monthly", "Yearly"};
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return titles[position];
+            }
+        });
+        tabLayout.setupWithViewPager(viewPager);
     }
 }
