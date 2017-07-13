@@ -1,4 +1,4 @@
-package in.projectmanas.hub;
+package in.projectmanas.hub.Activities;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -36,8 +36,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import junit.framework.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;

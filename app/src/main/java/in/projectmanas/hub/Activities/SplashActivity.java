@@ -1,4 +1,4 @@
-package in.projectmanas.hub;
+package in.projectmanas.hub.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

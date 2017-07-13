@@ -1,8 +1,7 @@
-package in.projectmanas.hub;
+package in.projectmanas.hub.Activities;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,7 +19,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static in.projectmanas.hub.FirstRunActivity.REQUEST_GOOGLE_PLAY_SERVICES;
+import in.projectmanas.hub.Activities.TestActivity;
+import in.projectmanas.hub.AsyncResponse;
+
+import static in.projectmanas.hub.Activities.FirstRunActivity.REQUEST_GOOGLE_PLAY_SERVICES;
 
 /**
  * Created by Kaushik on 2/25/2017.
