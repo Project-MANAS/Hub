@@ -22,7 +22,8 @@
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.SplashActivity" />
         <activity android:name=".Activities.LeaderBoardActivity" />
-        <activity android:name=".Activities.Users"></activity>
+        <activity android:name=".Activities.Users" />
+        <activity android:name=".Activities.UserCompleteProfile"></activity>
     </application>
 
 </manifest>
