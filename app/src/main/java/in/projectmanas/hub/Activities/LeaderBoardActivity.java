@@ -53,7 +53,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements AsyncRespo
                         startActivity(new Intent(LeaderBoardActivity.this, HomeActivity.class));
                         break;
                     case 1:
-                        startActivity(new Intent(LeaderBoardActivity.this, Users.class));
+                        startActivity(new Intent(LeaderBoardActivity.this, Users.class).putExtra("params", new String[]{"Leaderboard!A4:A"}));
                         break;
                     case 2:
                         String[] params1 = new String[]{"Leaderboard!A4:F"};

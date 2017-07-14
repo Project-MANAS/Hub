@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponse {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
                     startActivity(new Intent(HomeActivity.this, LeaderBoardActivity.class).putExtra("params", new String[]{"Leaderboard!A4:F"}).putExtra("toolbarName", "Attendance"));
-                } else if (i == 1) startActivity(new Intent(HomeActivity.this, Users.class));
+                } else if (i == 1) startActivity(new Intent(HomeActivity.this, Users.class).putExtra("params", new String[]{"Leaderboard!A4:A"}));
             }
         });
         //toolbar.setTitleTextColor(Color.WHITE);
